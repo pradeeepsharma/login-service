@@ -12,6 +12,6 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class PasswordRequest {
     private Long customerId;
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$", message = "password must be combination of alphanumeric string of size 8-20 ")
+  //  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$", message = "password must be combination of alphanumeric string of size 8-20 ")
     private String password;
 }

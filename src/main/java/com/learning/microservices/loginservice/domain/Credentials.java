@@ -16,7 +16,7 @@ public class Credentials {
     @GeneratedValue
     private int id;
     private Long customerId;
-    private String email;
+    //private String email;
     private String password;
 
 }

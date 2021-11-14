@@ -45,4 +45,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({InvalidLoginAttempt.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorMessage> invalidLoginRequestHandler(Exception ex, WebRequest webRequest) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .message(env.getProperty("login.not.valid"))
+                .description(ex.getMessage())
+                .errorCode(HttpStatus.UNAUTHORIZED.value())
+                .build();
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
 }

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoginInfoRepository extends CrudRepository<Credentials, Long> {
+
+    Credentials findByCustomerId(Long id);
 }
