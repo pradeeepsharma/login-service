@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequiredArgsConstructor
-@Validated
 public class LoginController {
     private static final Logger logger= LoggerFactory.getLogger(LoginController.class);
 
@@ -33,8 +31,8 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login/login", produces = "application/json")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
         LoginResponse response = loginService.validateLogin(loginRequest);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

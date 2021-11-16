@@ -2,6 +2,7 @@ package com.learning.microservices.loginservice.service;
 
 import com.learning.microservices.loginservice.domain.Credentials;
 import com.learning.microservices.loginservice.domain.Customer;
+import com.learning.microservices.loginservice.exception.CredentialsNotFoundException;
 import com.learning.microservices.loginservice.exception.CustomerNotFoundException;
 import com.learning.microservices.loginservice.exception.InvalidLoginAttempt;
 import com.learning.microservices.loginservice.jwt.JwtGenerator;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Objects.nonNull;
 
@@ -57,7 +61,12 @@ public class LoginService {
 
     public LoginResponse validateLogin(LoginRequest loginRequest) {
         Customer customer = getCustomer(loginRequest.getUserName());
-        Credentials credentials = repository.findByCustomerId(customer.getId());
+        List<Credentials> allCredentials = new ArrayList<>();
+        repository.findAll().forEach(allCredentials::add);
+        Credentials credentials = allCredentials.stream()
+                .filter(cred->cred.getCustomerId().equals(customer.getId()))
+                .findFirst()
+                .orElseThrow(()->{throw new CredentialsNotFoundException("No credentials found");});
         if(!credentials.getPassword().equals(loginRequest.getPassword())){
             throw new InvalidLoginAttempt("invalid login credentials");
         }
